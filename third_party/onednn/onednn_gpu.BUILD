@@ -66,6 +66,7 @@ _CMAKE_COMMON_LIST = {
     "#cmakedefine01 BUILD_PRIMITIVE_GPU_ISA_ALL": "#define BUILD_PRIMITIVE_GPU_ISA_ALL 1",
     "#cmakedefine01 BUILD_GEN9": "#define BUILD_GEN9 0",
     "#cmakedefine01 BUILD_GEN11": "#define BUILD_GEN11 0",
+    "#cmakedefine01 BUILD_XE2": "#define BUILD_XE2 0",
     "#cmakedefine01 BUILD_XELP": "#define BUILD_XELP 0",
     "#cmakedefine01 BUILD_XEHPG": "#define BUILD_XEHPG 0",
     "#cmakedefine01 BUILD_XEHPC": "#define BUILD_XEHPC 0",
@@ -86,13 +87,13 @@ template_rule(
 
 convert_cl_to_cpp(
     name = "kernel_list_generator",
-    src = "src/gpu/ocl/ocl_kernel_list.cpp.in",
-    cl_list = glob(["src/gpu/ocl/**/*.cl"]),
+    src = "src/gpu/intel/ocl/ocl_kernel_list.cpp.in",
+    cl_list = glob(["src/gpu/intel/ocl/**/*.cl"]),
 )
 
 convert_header_to_cpp(
     name = "header_generator",
-    src = "src/gpu/ocl/ocl_kernel_list.cpp.in",
+    src = "src/gpu/intel/ocl/ocl_kernel_list.cpp.in",
     header_list = glob(["src/gpu/**/*.h"]),
 )
 
@@ -117,6 +118,7 @@ filegroup(
             "src/gpu/amd/*",
             "src/gpu/sycl/ref*",
             "src/graph/**",
+           "src/gpu/intel/jit/v2/conv/planner/*",
         ],
     ) + [
         ":dnnl_config_h",
@@ -154,7 +156,7 @@ cc_library(
         "include/oneapi/dnnl",
         "src",
         "src/common",
-        "src/ocl",
+        "src/intel/ocl",
         "src/sycl",
     ],
     #nocopts = "-fno-exceptions",
